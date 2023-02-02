@@ -11,7 +11,7 @@ Fractional chance class for use with the [Scientist Library](http://github.com/d
 
 Require the latest version of Scientist Chances Fractional using [Composer](https://getcomposer.org/).
 
-    composer require treetime-ca/scientist-chances-fractional
+    composer require arcticlinux/scientist-chances-fractional
 
 ## 2. Usage
 
