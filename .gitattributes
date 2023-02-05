@@ -2,6 +2,7 @@
 /.gitattributes     export-ignore
 /.github            export-ignore
 /.gitignore         export-ignore
+/.idea              export-ignore
 /.php.cs            export-ignore
 /.php_cs_config.php export-ignore
 /.scrutinizer.yml   export-ignore
