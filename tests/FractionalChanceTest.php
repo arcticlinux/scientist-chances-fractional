@@ -13,20 +13,13 @@ use Scientist\Chances\FractionalChance;
  */
 class FractionalChanceTest extends TestCase
 {
-    /**
-     * @var FractionalChance
-     */
-    private $chance;
-
-
+    private FractionalChance $chance;
 
 
     public function setUp(): void
     {
         $this->chance = new FractionalChance();
     }
-
-
 
 
     /**
@@ -45,8 +38,6 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
      * @throws Exception
      */
@@ -57,8 +48,6 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
      * @throws Exception
      */
@@ -66,8 +55,6 @@ class FractionalChanceTest extends TestCase
     {
         static::assertTrue($this->chance->setProbability(1)->shouldRun());
     }
-
-
 
 
     /**
@@ -82,8 +69,6 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
      * @throws Exception
      */
@@ -92,8 +77,6 @@ class FractionalChanceTest extends TestCase
         static::assertTrue($this->chance->setProbability(1, 1)->shouldRun());
         static::assertTrue($this->chance->setProbability(PHP_INT_MAX, PHP_INT_MAX)->shouldRun());
     }
-
-
 
 
     /**
@@ -106,17 +89,15 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
-     * @param int|mixed   $denominator
-     * @param int|mixed   $numerator
-     * @param string|bool $expectException
+     * @param int|mixed $denominator
+     * @param int|mixed $numerator
+     * @param bool|string $expectException
      *
      * @throws Exception
      * @dataProvider testSetProbabilityProvider
      */
-    public function testSetProbability($denominator, $numerator, $expectException): void
+    public function testSetProbability(mixed $denominator, mixed $numerator, bool|string $expectException): void
     {
         if (in_array($expectException, ['Exception', 'TypeError'], true) === true) {
             $this->expectException($expectException);
@@ -126,8 +107,6 @@ class FractionalChanceTest extends TestCase
         static::assertSame($denominator, $chanceDenominator);
         static::assertSame($numerator, $chanceNumerator);
     }
-
-
 
 
     /**

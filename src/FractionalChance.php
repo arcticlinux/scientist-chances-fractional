@@ -6,10 +6,8 @@ use Exception;
 
 class FractionalChance implements Chance
 {
-    private $denominator;
-    private $numerator;
-
-
+    private int $denominator;
+    private int $numerator;
 
 
     /**
@@ -21,14 +19,12 @@ class FractionalChance implements Chance
     }
 
 
-
-
     /**
      * The default probability is numerator 1 out of $denominator
      * e.g. 1/1   for 100% chance
      *      1/100 for 1% chance
      *
-     * @param int      $denominator
+     * @param int $denominator
      * @param int|null $numerator
      *
      * @return $this
@@ -48,8 +44,6 @@ class FractionalChance implements Chance
 
         return $this;
     }
-
-
 
 
     /**
