@@ -1,12 +1,15 @@
 <?php
+declare(strict_types=1);
 
 /** @noinspection PhpRedundantOptionalArgumentInspection */
 
 namespace Tests;
 
 use Exception;
+use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use Scientist\Chances\FractionalChance;
+use TypeError;
 
 /**
  * @see \Scientist\Chances\StandardChanceTest;
@@ -16,27 +19,24 @@ class FractionalChanceTest extends TestCase
     /**
      * @var FractionalChance
      */
-    private $chance;
+    private FractionalChance $chance;
 
-
-
-
-    public function setUp(): void
+    /**
+     * @return void
+     */
+    protected function setUp(): void
     {
         $this->chance = new FractionalChance();
+        parent::setUp();
     }
-
-
 
 
     /**
      * Test that chance will not take values that are too large
-     *
-     * @throws Exception
      */
     public function testChanceGreaterThanOneHundredPercent(): void
     {
-        $this->expectException('Exception');
+        $this->expectException(OutOfRangeException::class);
 
         // 2/1 = 200% chance
         $numerator = 2;
@@ -45,18 +45,14 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
-     * @throws Exception
+     * @return void
      */
     public function testDenominatorLessThanZero(): void
     {
-        $this->expectException('Exception');
+        $this->expectException(OutOfRangeException::class);
         $this->chance->setProbability(-1);
     }
-
-
 
 
     /**
@@ -68,20 +64,17 @@ class FractionalChanceTest extends TestCase
     }
 
 
-
-
     /**
      * @throws Exception
      */
     public function testDenominatorOrNumeratorZeroShouldNotRun(): void
     {
         static::assertFalse($this->chance->setProbability(0)->shouldRun());
+        /** @noinspection PhpRedundantOptionalArgumentInspection */
         static::assertFalse($this->chance->setProbability(0, 1)->shouldRun());
         static::assertFalse($this->chance->setProbability(1, 0)->shouldRun());
         static::assertFalse($this->chance->setProbability(0, 0)->shouldRun());
     }
-
-
 
 
     /**
@@ -89,11 +82,10 @@ class FractionalChanceTest extends TestCase
      */
     public function testEqualDenominatorNumeratorShouldRun(): void
     {
+        /** @noinspection PhpRedundantOptionalArgumentInspection */
         static::assertTrue($this->chance->setProbability(1, 1)->shouldRun());
         static::assertTrue($this->chance->setProbability(PHP_INT_MAX, PHP_INT_MAX)->shouldRun());
     }
-
-
 
 
     /**
@@ -101,33 +93,30 @@ class FractionalChanceTest extends TestCase
      */
     public function testNumeratorLessThanZero(): void
     {
-        $this->expectException('Exception');
+        $this->expectException(exception: OutOfRangeException::class);
         $this->chance->setProbability(1, -1);
     }
 
 
-
-
     /**
-     * @param int|mixed   $denominator
-     * @param int|mixed   $numerator
-     * @param string|bool $expectException
+     * @param int|mixed $denominator
+     * @param int|mixed $numerator
+     * @param mixed $expectException
      *
      * @throws Exception
      * @dataProvider testSetProbabilityProvider
      */
-    public function testSetProbability($denominator, $numerator, $expectException): void
+    public function testSetProbability(mixed $denominator, mixed $numerator, mixed $expectException): void
     {
-        if (in_array($expectException, ['Exception', 'TypeError'], true) === true) {
+        if (in_array($expectException, [OutOfRangeException::class, TypeError::class], true) === true) {
             $this->expectException($expectException);
+
         }
         $this->chance->setProbability($denominator, $numerator);
         [$chanceDenominator, $chanceNumerator] = $this->chance->getProbability();
         static::assertSame($denominator, $chanceDenominator);
         static::assertSame($numerator, $chanceNumerator);
     }
-
-
 
 
     /**
@@ -149,8 +138,8 @@ class FractionalChanceTest extends TestCase
         $testArray[] = [PHP_INT_MAX, PHP_INT_MAX, false];
 
         // Numerator greater than denominator
-        $testArray[] = [1, PHP_INT_MAX, 'Exception'];
-        $testArray[] = [1, PHP_INT_MAX + 1, 'TypeError'];
+        $testArray[] = [1, PHP_INT_MAX, OutOfRangeException::class];
+        $testArray[] = [1, PHP_INT_MAX + 1, TypeError::class];
 
         return $testArray;
     }

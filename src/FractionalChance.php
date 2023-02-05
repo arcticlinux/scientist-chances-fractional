@@ -1,16 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace Scientist\Chances;
 
 use Exception;
+use OutOfRangeException;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class FractionalChance implements Chance
 {
-    private $denominator;
-    private $numerator;
 
-
-
+    private int $denominator;
+    private int $numerator;
 
     /**
      * @return array
@@ -21,26 +24,24 @@ class FractionalChance implements Chance
     }
 
 
-
-
     /**
      * The default probability is numerator 1 out of $denominator
      * e.g. 1/1   for 100% chance
      *      1/100 for 1% chance
      *
-     * @param int      $denominator
-     * @param int|null $numerator
+     * @param int $denominator
+     * @param int $numerator
      *
      * @return $this
-     * @throws Exception
+     * @throws OutOfRangeException
      */
-    public function setProbability(int $denominator, ?int $numerator = 1): self
+    public function setProbability(int $denominator, int $numerator = 1): self
     {
         if ($denominator < 0 || $numerator < 0) {
-            throw new Exception('numerator and denominator for probability must be greater than zero');
+            throw new OutOfRangeException('numerator and denominator for probability must be greater than zero');
         }
-        if ($denominator > 0 & $numerator > 0 && $numerator / $denominator > 1) {
-            throw new Exception('experiment probability cannot be greater than 100 percent');
+        if ($denominator > 0 && $numerator > 0 && $numerator / $denominator > 1) {
+            throw new OutOfRangeException('experiment probability cannot be greater than 100 percent');
         }
 
         $this->denominator = $denominator;
@@ -50,11 +51,8 @@ class FractionalChance implements Chance
     }
 
 
-
-
     /**
      * Determine if the experiment should run
-     *
      * @throws Exception
      */
     public function shouldRun(): bool
