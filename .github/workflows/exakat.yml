@@ -1,0 +1,18 @@
+name: Exakat scanning
+
+on: [push]
+
+jobs:
+  exakat:
+    name: Exakat
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup problem matchers for Exakat Text
+      run: echo "::add-matcher::.github/exakat.json"
+    - name: Exakat
+      uses: docker://exakat/exakat-ga
+      env:
+        INPUT_EXIT_ON_ISSUES: true
+      with:
+        args: entrypoint.sh --format Text

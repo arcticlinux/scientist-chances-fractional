@@ -1,0 +1,15 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "json-validator",
+      "pattern": [
+        {
+          "regexp": "\/(.+):(\\d+)\\t(.+)\\t(.+\\t.+)$",
+          "file": 1,
+          "line": 2,
+          "message": 4
+        }
+      ]
+    }
+  ]
+}
