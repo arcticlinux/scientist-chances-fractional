@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /** @noinspection PhpRedundantOptionalArgumentInspection */
@@ -22,16 +23,6 @@ class FractionalChanceTest extends TestCase
     private FractionalChance $chance;
 
     /**
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        $this->chance = new FractionalChance();
-        parent::setUp();
-    }
-
-
-    /**
      * Test that chance will not take values that are too large
      */
     public function testChanceGreaterThanOneHundredPercent(): void
@@ -44,7 +35,6 @@ class FractionalChanceTest extends TestCase
         $this->chance->setProbability($denominator, $numerator);
     }
 
-
     /**
      * @return void
      */
@@ -54,7 +44,6 @@ class FractionalChanceTest extends TestCase
         $this->chance->setProbability(-1);
     }
 
-
     /**
      * @throws Exception
      */
@@ -62,7 +51,6 @@ class FractionalChanceTest extends TestCase
     {
         static::assertTrue($this->chance->setProbability(1)->shouldRun());
     }
-
 
     /**
      * @throws Exception
@@ -76,7 +64,6 @@ class FractionalChanceTest extends TestCase
         static::assertFalse($this->chance->setProbability(0, 0)->shouldRun());
     }
 
-
     /**
      * @throws Exception
      */
@@ -87,7 +74,6 @@ class FractionalChanceTest extends TestCase
         static::assertTrue($this->chance->setProbability(PHP_INT_MAX, PHP_INT_MAX)->shouldRun());
     }
 
-
     /**
      * @throws Exception
      */
@@ -96,7 +82,6 @@ class FractionalChanceTest extends TestCase
         $this->expectException(exception: OutOfRangeException::class);
         $this->chance->setProbability(1, -1);
     }
-
 
     /**
      * @param int|mixed $denominator
@@ -110,14 +95,12 @@ class FractionalChanceTest extends TestCase
     {
         if (in_array($expectException, [OutOfRangeException::class, TypeError::class], true) === true) {
             $this->expectException($expectException);
-
         }
         $this->chance->setProbability($denominator, $numerator);
         [$chanceDenominator, $chanceNumerator] = $this->chance->getProbability();
         static::assertSame($denominator, $chanceDenominator);
         static::assertSame($numerator, $chanceNumerator);
     }
-
 
     /**
      * @group provider
@@ -142,5 +125,14 @@ class FractionalChanceTest extends TestCase
         $testArray[] = [1, PHP_INT_MAX + 1, TypeError::class];
 
         return $testArray;
+    }
+
+    /**
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->chance = new FractionalChance();
+        parent::setUp();
     }
 }
